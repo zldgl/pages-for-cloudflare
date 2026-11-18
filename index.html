@@ -68,6 +68,34 @@
                                     article.innerHTML =
                                         `<h2>${post.title}</h2><p class="post-error">加载失败: ${e.message}</p>`;
                                 }
+                                // ===== 组件化评论：md 里写 <div class="giscus"></div> 占位，写哪插哪 =====
+                                const term = post.file.replace(/\.md$/, '');   // 每篇文章唯一标识
+                                function mountGiscus(slot) {
+                                    if (slot.dataset.mounted) return;          // 防重复注入
+                                    slot.dataset.mounted = '1';
+                                    slot.classList.add('post-comments');
+                                    const gs = document.createElement('script');
+                                    gs.src = 'https://giscus.app/client.js';
+                                    gs.dataset.repo = 'zldgl/pages-for-cloudflare';
+                                    gs.dataset.repoId = 'R_kgDOVvNEeQ';
+                                    gs.dataset.category = 'Announcements';
+                                    gs.dataset.categoryId = 'DIC_kwDOVvNEec4DLZTT';
+                                    gs.dataset.mapping = 'specific';
+                                    gs.dataset.term = term;
+                                    gs.dataset.strict = '1';
+                                    gs.dataset.reactionsEnabled = '1';
+                                    gs.dataset.emitMetadata = '0';
+                                    gs.dataset.inputPosition = 'top';
+                                    gs.dataset.theme = 'light';
+                                    gs.dataset.lang = 'zh-CN';
+                                    gs.dataset.loading = 'lazy';
+                                    gs.setAttribute('crossorigin', 'anonymous');
+                                    gs.async = true;
+                                    slot.appendChild(gs);                       // giscus 在此位置渲染
+                                }
+                                // 把 md 里写的 <div class="giscus"></div> 全部就地替换成评论区
+                                article.querySelectorAll('.giscus').forEach(mountGiscus);
+
                                 container.appendChild(article);
                             }
 
