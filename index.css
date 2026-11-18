@@ -1,0 +1,375 @@
+/* 字体样式 */
+@font-face {
+  font-family: "LoveLetter";
+  src: url("fonts/LoveLetter.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+.love-letter {
+  font-family: "LoveLetter";
+}
+.txt{
+  font-size: 10px;
+}
+.small {
+  font-size: 15px;
+}
+.medium {
+  font-size: 20px;
+}
+.large {
+  font-size: 30px;
+}
+.red {
+  color: red;
+}
+.the_top h1 {
+  line-height: 0;
+}
+h1_flex {
+  line-height: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.the_top a {
+  color: inherit;
+  text-decoration: none;
+}
+h1_flex a {
+  color: inherit;
+  text-decoration: none;
+}
+.right {
+  text-align: right;
+}
+.the_top {
+  padding-bottom: 10px;
+  /* 底部渐变线 */
+  background: linear-gradient(
+      to right,
+      #ffffff 0%,
+      #000000 10%,
+      #000000 50%,
+      #000000 90%,
+      #ffffff 100%
+    )
+    left bottom / 100% 3px no-repeat;
+}
+
+.fullfill {
+  line-height: 1.3;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  background-color: #e3e6e9;
+}
+
+middle_right h1 {
+  line-height: 1.5;
+  margin: 0 0 12px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+middle_right img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+/* 左右两栏：父级 flex，子级用 flex-basis / flex-grow 控宽 */
+middle {
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+
+  max-width: 1200px; margin: 0 auto;
+}
+
+middle_left {
+  flex: 0 0 70%;
+  display: block;
+  min-width: 0;
+}
+
+#pager {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  line-height: 1.6;
+}
+
+#pager a {
+  text-decoration: underline;
+}
+
+.page-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid #000;
+  background: #fff;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.page-box input {
+  width: 2.5em;
+  padding: 0.15rem 0.25rem;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font: inherit;
+  -moz-appearance: textfield;
+}
+
+.page-box input::-webkit-outer-spin-button,
+.page-box input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.page-box input:focus {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+}
+
+.page-sep,
+#page-total {
+  user-select: none;
+}
+
+#content {
+  line-height: 1.6;
+}
+
+#content article {
+  display: block;
+  margin: 0 0 2rem;
+  padding: 0 0 1.5rem;
+  border-bottom: 2px solid #e3e6e9;
+}
+
+#content article h2 {
+  line-height: 1.3;
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem;
+}
+
+#content .post-error {
+  color: #c00;
+}
+
+/* 右栏占剩余空间 */
+middle_right {
+  flex: 1;
+  min-width: 0;
+}
+
+/* marked 内联表现 */
+/* 黑幕（hide）效果 */
+.heimu {
+    background-color: #252525;
+    color: #252525;
+    padding: 0 4px;
+    border-radius: 3px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+/* 鼠标悬停或手机点击聚焦时显示文字 */
+.heimu:hover,
+.heimu:focus {
+    color: #ffffff;
+}
+.md_center { 
+	text-align: center; 
+	
+}
+blockquote {
+  margin: 1em 0;
+  padding: 0 1em;
+  color: #6a737d;              /* 灰色文字 */
+  border-left: 0.25em solid #dfe2e5;  /* 左侧竖线 */
+}
+/*------------- 个人资料-----------------------*/
+page{
+  width: 80%;
+  display: block;
+  margin: 0 auto ;
+  color: #383838c4;
+  font-weight: bolder;
+}
+page.top{
+  display: flex;
+  flex-direction: row;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+page.top > h1_flex{
+  width: 100%;
+  flex:1;
+  margin-bottom: 10px;
+}
+page img{
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  object-position: center;
+}
+.center{
+  padding-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+}
+.center > page.left,
+.center > page.right {
+  width: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 0;
+}
+page.left{
+  flex: 0 0 auto;
+}
+.profile-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.center > page.right {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.circle_div{
+  width: 150px;
+  height: 150px;
+  background-image: url(https://s41.ax1x.com/2026/05/17/pev5gGF.png);
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+  border-radius:50%;
+}
+.clap-btn {
+  width: 48px;
+  height: 48px;
+  margin-top: 12px;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.clap-btn.pop {
+  animation: clap-pop 0.35s ease;
+}
+@keyframes clap-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+page.right table{
+  width: 300px;
+  max-width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+page.right th{
+  background-color: #d9d9d9;
+  width: 5.5em;
+  white-space: nowrap;
+}
+body.me {
+  background: url('img/bak.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* 个人资料：窄屏保持左右布局，整体等比缩小 */
+@media (max-width: 640px) {
+  page.center {
+    gap: 8px;
+  }
+  page.center > page.right {
+    margin-left: 4px;
+  }
+  .circle_div {
+    width: 72px;
+    height: 72px;
+  }
+  .clap-btn {
+    width: 36px;
+    height: 36px;
+    margin-top: 8px;
+    font-size: 16px;
+  }
+  page.left p {
+    font-size: 12px;
+    margin: 6px 0 0;
+  }
+  page.right table {
+    width: 100%;
+    font-size: 13px;
+  }
+  page.right th {
+    width: 4em;
+  }
+}
+/* tag 栏 */
+.tag-list {
+  padding: 8px 16px;
+  line-height: 2;
+}
+.tag-item {
+  display: inline-block;
+  margin: 0 4px 6px 0;
+  padding: 1px 8px;
+  border: 1px solid #999;
+  border-radius: 10px;
+  font-size: 13px;
+  background: #f2f4f6;
+}
+/*footer*/
+
+
+.footer-nav {
+  display: flex;              
+  justify-content: flex-start;
+  gap: 40px;                  
+  list-style: none;           
+  padding: 24px 32px;
+  margin: 0;
+  flex-wrap: wrap;         
+  background: #e9e9e9;
+}
+
+.footer-nav > li {
+  flex: 0 0 auto;             
+}
+
+.footer-nav dl {
+  margin: 0;
+}
+
+.footer-nav dt {
+  font-weight: bold;
+  margin-bottom: 8px;         
+}
+
+.footer-nav dd {
+  margin: 0 0 4px 0;          
+}

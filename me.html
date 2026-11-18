@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人资料</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class=me>
+    <!-- 顶栏：面包屑与返回顶部 -->
+    <page class="top">
+        <h1_flex>
+            <nav class="bread">
+                <a href="index.html">my blog</a>
+                <span>&gt;</span>
+                <a href="me.html">个人资料</a>
+            </nav>
+            <a href="#top" class="right">博客顶部</a>
+        </h1_flex>
+    </page>
+    <!-- 头图 -->
+    <page>
+        <img src="https://i.ibb.co/kswbLypv/tayu.gif">
+    </page>
+    <!-- 资料区：头像与简介 -->
+    <page class="center">
+        <!-- 左侧：头像与拍手 -->
+        <page class="left">
+            <div class="profile-stack">
+                <div class="circle_div"></div>
+                <button type="button" class="clap-btn" id="clap-btn" aria-label="拍手">👏</button>
+            </div>
+            <p>&gt&gt我是一个拍手</p>
+        </page>
+        <!-- 右侧：简介表格 -->
+        <page class="right">
+            <p>>简介</p>
+            <table border="1">
+                <tr>
+                    <th>名称</th>
+                    <td>我</td>
+                </tr>
+                <tr>
+                    <th>自我介绍</th>
+                    <td>我是大学生，请给我钱。</td>
+                </tr>
+            </table>
+			<audio controls src="bgm/pachelbel-cannon.ogg"></audio>
+        </page>
+    </page>
+    <script>
+      document.getElementById("clap-btn").addEventListener("click", function () {
+        this.classList.remove("pop");
+        void this.offsetWidth;
+        this.classList.add("pop");
+      });
+    </script>
+</body>
+</html>

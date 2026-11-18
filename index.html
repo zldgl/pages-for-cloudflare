@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神秘单页实例</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- 整页：页眉 + 主栏 -->
+    <header>
+        <!-- 顶部标题与导航 -->
+        <div class="the_top">
+            <h1 class="love-letter large"><u>my bl<u class="red">o</u>g</u></h1>
+            <h1 class="small love-letter small">&emsp;&emsp;2026<span class="medium love-letter">by</span>mmdxyryd</h1>
+            <h1_flex class="small love-letter medium"><a href="https://myblog-4tv.pages.dev">&emsp;&emsp;myblog-4tv.pages.dev</a>
+                <a href="#top" class="right medium">博客顶部</a></h1_flex>
+        </div>
+
+        <!-- 主内容区：文章 + 侧栏 -->
+        <middle>
+            <!-- 左侧：文章列表与分页 -->
+            <middle_left>
+                <div id="content"></div>
+                <nav id="pager">
+                    <a id="prev" href="#">上一页</a>
+                    <label class="page-box" for="page-input">
+                        <input id="page-input" type="number" min="1" inputmode="numeric" aria-label="当前页码">
+                        <span class="page-sep">/</span>
+                        <span id="page-total">1</span>
+                    </label>
+                    <a id="next" href="#">下一页</a>
+                </nav>
+                <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+                <script type="module">
+                    const container = document.getElementById('content');
+                    const prev = document.getElementById('prev');
+                    const next = document.getElementById('next');
+                    const pageInput = document.getElementById('page-input');
+                    const pageTotal = document.getElementById('page-total');
+
+                    if (!window.marked) {
+                        container.textContent = 'marked 未加载，准确说这个域名：cdn.jsdelivr.net/npm/marked/lib/marked.umd.js';
+                    } else {
+                        try {
+                            const res = await fetch('posts.json', { cache: 'no-store' });
+                            if (!res.ok) throw new Error('无法加载 posts.json');
+                            const list = await res.json();
+                            if (!Array.isArray(list)) throw new Error('posts.json 必须是数组');
+
+                            const pageSize = 3;
+                            const totalPages = Math.ceil(list.length / pageSize) || 1;
+                            let page = Number(new URLSearchParams(location.search).get('page')) || 1;
+                            page = Math.max(1, Math.min(page, totalPages));
+
+                            const start = (page - 1) * pageSize;
+                            const pageList = list.slice(start, start + pageSize);
+
+                            for (const post of pageList) {
+                                const article = document.createElement('article');
+                                try {
+                                    const mdRes = await fetch(`md/${post.file}`, { cache: 'no-store' });
+                                    if (!mdRes.ok) throw new Error(`HTTP ${mdRes.status}`);
+                                    const mdText = await mdRes.text();
+                                    const body = mdText.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+									article.innerHTML = window.marked.parse(body);
+                                } catch (e) {
+                                    article.innerHTML =
+                                        `<h2>${post.title}</h2><p class="post-error">加载失败: ${e.message}</p>`;
+                                }
+                                container.appendChild(article);
+                            }
+
+                            if (!container.children.length) {
+                                container.textContent = '本页没有文章';
+                            }
+
+                            pageInput.value = String(page);
+                            pageInput.max = String(totalPages);
+                            pageTotal.textContent = String(totalPages);
+
+                            pageInput.addEventListener('keydown', (e) => {
+                                if (e.key !== 'Enter') return;
+                                e.preventDefault();
+                                let target = Number(pageInput.value);
+                                if (!Number.isFinite(target)) target = page;
+                                target = Math.max(1, Math.min(Math.floor(target), totalPages));
+                                if (target !== page) {
+                                    location.search = `?page=${target}`;
+                                } else {
+                                    pageInput.value = String(page);
+                                }
+                            });
+
+                            if (page > 1) {
+                                prev.href = `?page=${page - 1}`;
+                                prev.style.display = '';
+                            } else {
+                                prev.style.display = 'none';
+                            }
+
+                            if (page < totalPages) {
+                                next.href = `?page=${page + 1}`;
+                                next.style.display = '';
+                            } else {
+                                next.style.display = 'none';
+                            }
+                        } catch (err) {
+                            container.textContent = '加载文章失败: ' + err.message;
+                            console.error(err);
+                        }
+                    }
+                </script>
+            </middle_left>
+            <!-- 右侧：关于、公告、标签 -->
+            <middle_right>
+                <h1 class="fullfill small">关于</h1>
+                <img src="https://s41.ax1x.com/2026/05/16/pevuxKO.png"></img>
+                <p class="small">如果是博客的话。内容可能有评论和记录</p>
+                <a href="me.html">查看个人资料</a>
+                <h1 class="fullfill small">公告</h1>
+                <p>我是公告</p>
+                <h1 class="fullfill small">tag</h1>
+                <div id="tag-list" class="tag-list"></div>
+				<h1 class="fullfill small">Link</h1>
+				<a href="https://bgm.tv/user/zlgl" title="Bangumi 番组计划"><img src="http://bgm.tv/img/ico/bgm_banner.gif"style="width: 600px; height: auto;  border="0" alt="" /></a>
+                
+            </middle_right>
+        </middle>
+    </header>
+    <h1></h1>
+    <script type="module">
+        // 扫描 md frontmatter 的 tags，统计数量并按数字排序展示
+        (async function renderTags() {
+            const tagBox = document.getElementById('tag-list');
+            if (!tagBox) return;
+            try {
+                const res = await fetch('posts.json', { cache: 'no-store' });
+                const list = await res.json();
+                const tagCount = new Map();
+                for (const post of list) {
+                    const mdRes = await fetch(`md/${post.file}`, { cache: 'no-store' });
+                    if (!mdRes.ok) continue;
+                    const text = await mdRes.text();
+                    const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+                    if (!m) continue;
+                    const mTags = m[1].match(/^\s*tags\s*=\s*\[([\s\S]*?)\]\s*$/m);
+                    if (!mTags) continue;
+                    const tags = mTags[1].split(',')
+                        .map(t => t.trim().replace(/^['"]|['"]$/g, ''))
+                        .filter(Boolean);
+                    for (const tag of tags) {
+                        tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
+                    }
+                }
+                // 数字排序：数量降序，数量相同按名称升序
+                const entries = [...tagCount.entries()]
+                    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-Hans-CN'));
+                if (!entries.length) {
+                    tagBox.textContent = '暂无标签';
+                    return;
+                }
+                for (const [tag, count] of entries) {
+                    const span = document.createElement('span');
+                    span.className = 'tag-item';
+                    span.textContent = `${tag} (${count})`;
+                    tagBox.appendChild(span);
+                    tagBox.appendChild(document.createTextNode(' '));
+                }
+            } catch (e) {
+                tagBox.textContent = '标签加载失败';
+                console.error(e);
+            }
+        })();
+    </script>
+</body>
+ <hr/>
+<ul class="footer-nav">
+  <li class="first">
+    <dl>
+      <dt>关于</dt>
+      <dd><a href="https://wx.mail.qq.com">zldgl@qq.com</a></dd>
+      <dd><a href="...">链接</a></dd>
+    </dl>
+  </li>
+  <li>
+    <dl>
+      <dt>其他</dt>
+      <dd><a href="...">其他</a></dd>
+    </dl>
+  </li>
+</ul>
+<p style="font-size: 10px"; class="end">一个笨拙的人</p>
+</html>
